@@ -16,11 +16,14 @@ public class EEPV2 {
         ArrayList<Double> intervalTimes = new ArrayList<>();
         ArrayList<String[]> departureList = new ArrayList<>();
         String inService = "";
-        int customerNum = 0, Interarrival = 0, arrival = 0, service = 0, time = 0, evntType = 0, 
-            bt = 0, p = 0 , n = 0, swq = 0, wQ = 0, sTS = 0, tS=0, iQ = 0, q =0, iB = 0;
+        int customerNum = 0, evntType = 0, bt = 0, p = 0 , n = 0, swq = 0, wQ = 0, sTS = 0, 
+        tS=0, iQ = 0, q =0, iB = 0;
+        Double Interarrival = 0.0, arrival = 0.0, service = 0.0, time = 0.0;
         //Event type = 0 (Initializing), 1 = Arrival, 2 = Departure
         
         int[] averageValues = new int[7]; // Stores the average value. Follow the arrangement on the specifications 1-7.
+        Double[] serviceTimes = {2.90,1.76,3.39,4.52,4.46,4.36,2.07,3.36,2.37,5.38};
+        Double[] interTimes = {1.73,1.35,0.71,0.62,14.28,0.7,15.52,3.15,1.76,1.0};
         data.clear(); // resets the data
 
         /*
@@ -72,7 +75,8 @@ public class EEPV2 {
             } else {
                 customerNum++;
                 datarow[0] = Integer.toString(customerNum);
-
+                datarow[1] = Double.toString(interTimes[customerNum-1]);
+                datarow[3] = Double.toString(serviceTimes[customerNum-1]);
                 datarow[5] = "Arrival"; 
 
                 if(!(arrivalList.isEmpty())){
@@ -86,13 +90,12 @@ public class EEPV2 {
                             data.add(datarowDepart); // Adds the departure list to the data for printing
                         }
                     }
+                }
 
-
+                
                 // Calculation for arrivals
                 if(customerNum == 1) {
-                        datarow[1] = Double.toString(1.73);
                         datarow[2] = Integer.toString(0);
-                        datarow[3] = Double.toString(2.90);
                         datarow[4] = Integer.toString(0);
                         datarow[6] = Integer.toString(0);
                         datarow[7] = Integer.toString(1);
@@ -110,10 +113,17 @@ public class EEPV2 {
                         datarow[18] = Integer.toString(0);
                         intervalTimes.add(1.73);
                     } else {
-
+                        if(customerNum==2) {
+                            datarow[2] = Double.toString(interTimes[customerNum-1]);
+                            datarow[4] = Double.toString(interTimes[customerNum - 1]);
+                        } else {
+                            datarow[2] = Double.toString(arrivalList.get(customerNum-1)[2]);
+                        }
+                        
                     }
                 
             }
+        
             
             arrivalList.add(datarow);
             data.add(datarow);
@@ -123,14 +133,15 @@ public class EEPV2 {
         System.out.println("Do you want to run another simulation? (Yes/No)");
         String answer = src.next();
         if (answer.equalsIgnoreCase("Yes")) {
-           terminationOption();
+           mainMenu();
         } else {
             System.out.println("Thank you for using Single Channel Queuing System Simulation!");
             return;
         }
    }
 
-    private static void terminationOption() {
+
+    private static void mainMenu() {
 
         try {
             int limit;
@@ -141,7 +152,7 @@ public class EEPV2 {
         } catch (Exception e){
             System.out.println("Error in input try again.");
             buffer();
-            terminationOption();
+            mainMenu();
         }
 
     }
