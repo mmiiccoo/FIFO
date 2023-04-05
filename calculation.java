@@ -30,36 +30,26 @@ public class calculation {
         String[] datarow = new String[18];
         String[] datarowDepart = new String[18];
         customerNum++;
+
+        time = 0.0;
+            for(String[] t : arrivalList){
+                time += Double.parseDouble(t[1]);
+                System.out.println(Double.parseDouble(t[1]));
+            }
+
         if(customerNum == 1) {
             Interarrival = interTimes[0];
             service = serviceTimes[0];
+            inService = String.valueOf(time);
         } else {
             Interarrival = interTimes[arrivalList.size()];
             service = serviceTimes[arrivalList.size()];
-            for(String[] depart: toDepartList){
-                if(Double.parseDouble(depart[2]) < time ){
-                    datarowDepart[0] = depart[0];
-                    datarowDepart[3] = depart[2];
-                    datarowDepart[4] = "Departing";
-                    datarowDepart[5] = String.valueOf(Double.valueOf(depart[5]) - 1);
-
-                    if(inQueue.isEmpty()){
-                        datarowDepart[6] = String.valueOf("0");
-                    } else {
-                        datarowDepart[6] = depart[6];
-                    }
-                    data.add(datarowDepart);
-                }
-            }
+            // parting methods
             
         }
         
          // Resets the time, then adds past interarrival times for time.
-         time = 0.0;
-         for(String[] t : arrivalList){
-             time += Double.parseDouble(t[1]);
-             System.out.println(Double.parseDouble(t[1]));
-         }
+         
 
          evntType = "Arrival";
 
@@ -77,16 +67,24 @@ public class calculation {
             bt = 1;
          }
 
-         if(inQueue.isEmpty()){
-            temp = "{ }";
+         
+         if(customerNum == 2){
+            temp = "{ ";
+            inQueue.add(String.valueOf(time));
+            temp += String.valueOf(time) ;  
+         } else if(inQueue.isEmpty()){
+            temp = "{ ";
          } else {
+            temp = "{ ";
+                inQueue.add(String.valueOf(String.format("%.2f", time)));
             for (int x = 0 ; x < inQueue.size(); x++) {
-                if(inQueue.size() == x) {
-                    temp += inQueue.get(x) + " }";
+                if(x == 0) {
+                    temp += inQueue.get(x);
                 } else {
-                    temp += inQueue.get(x) + " , ";
+                    temp += " , " + inQueue.get(x);
                 }
-         }
+                    
+            }
         }
 
         if(customerNum == 1) {
@@ -100,7 +98,7 @@ public class calculation {
         datarow[4] = evntType;
         datarow[5] = Integer.toString(qt);
         datarow[6] = Integer.toString(bt);
-        datarow[7] = temp;
+        datarow[7] = temp + " }";
         datarow[8] = inService;
         datarow[9] = Integer.toString(p);
         datarow[10] = Integer.toString(n);
