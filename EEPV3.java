@@ -11,6 +11,7 @@ public class EEPV3 {
         ArrayList<String[]> data = new ArrayList<String[]>(); // Stores per row
         ArrayList<String> inQueue = new ArrayList<>();
         ArrayList<String[]> arrivalList = new ArrayList<>();
+        ArrayList<String[]> departList = new ArrayList<>();
 
         String inService = "",evntType = "",temp = "{ ";
         int customerNum = 0, qt = 0 ,bt = 0, p = 0 , n = 0, eWQ = 0, wQ = 0, eTS = 0, 
@@ -30,18 +31,33 @@ public class EEPV3 {
             } else {
                 service = serviceTimes[customerNum - 1];
                 Interarrival = interTimes[customerNum - 1];
+                bt++;
 
                 if(customerNum == 1){
                     evntType = "Arrival";
                     n++;
                 } else {
+                    if(arrivalList.get(customerNum - 1)[3] < service){
 
+                    }
                     for (String[] e : arrivalList) {
                         if(arrival > Double.valueOf(e[3])){ // Compares arrival time of this customer to check if A previous customers leaves before they enter
-                            n++;
-                            p++;
-                            arrivalList.remove(e); // Removes the object from arrivals
-                            data.add(datarowDepart); // Adds the departure list to the data for printing
+                            if(departList.isEmpty()){
+                                n++;
+                                p++;
+                                data.add(datarowDepart); // Adds the departure list to the data for printing
+                                departList.add(datarowDepart); // Adds the data to the departed list
+                            } else {
+                                for (String[] f : departList) {
+                                    if(!(e[3].equals(f[3]))){
+                                        n++;
+                                        p++;
+                                        data.add(datarowDepart); // Adds the departure list to the data for printing
+                                        departList.add(datarowDepart); // Adds the data to the departed list
+                                    }
+                                }
+
+                            }
                         }
                     }
 
@@ -56,23 +72,22 @@ public class EEPV3 {
 /*
          * 0 = Customer number
          * 1 = InterArrival
-         * 2 = Arrival
-         * 3 = Service
-         * 4 = Time
-         * 5 = Event Type
-         * 6 = Q(t) 
-         * 7 = B(t)
-         * 8 = Arrival Time in Queue
-         * 9 = Arrival Time in Service
-         * 10 = P
-         * 11 = N
-         * 12 = EWQ
-         * 13 = WQ*
-         * 14 = ETS
-         * 15 = TS*
-         * 16 = FQ
-         * 17 = Q
-         * 18 = FB
+         * 2 = Service
+         * 3 = Time
+         * 4 = Event Type
+         * 5 = Q(t) 
+         * 6 = B(t)
+         * 7 = Arrival Time in Queue
+         * 8 = Arrival Time in Service
+         * 9 = P
+         * 10 = N
+         * 11 = EWQ
+         * 12 = WQ*
+         * 13 = ETS
+         * 14 = TS*
+         * 15 = FQ
+         * 16 = Q
+         * 17 = FB
          */
 
             datarow[0] = Integer.toString(customerNum);
