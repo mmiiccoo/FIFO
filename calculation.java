@@ -5,14 +5,11 @@ public class calculation {
     public static void main(String[] args) {
         String inService = "",evntType = "",temp = "{ ";
         int customerNum = 0, qt = 0 ,bt = 0, p = 0 , n = 0, eWQ = 0, wQ = 0, eTS = 0, 
-             tS=0, iQ = 0, q =0, iB = 0;
+             tS=0, iQ = 0, q =0, iB = 0, stopper = 0;
         Double Interarrival = 0.0, arrival = 0.0, service = 0.0, time = 0.0;
         ArrayList<String[]> data = new ArrayList<String[]>(); // Stores per row
         ArrayList<String> inQueue = new ArrayList<>();
         ArrayList<String[]> arrivalList = new ArrayList<>();
-        ArrayList<String[]> toDepartList = new ArrayList<>();
-        ArrayList<String> waitingTimes = new ArrayList<>();
-        ArrayList<String> timeSystem = new ArrayList<>();
         Double[] serviceTimes = {2.90,1.76,3.39,4.52,4.46,4.36,2.07,3.36,2.37,5.38};
         Double[] interTimes = {1.73,1.35,0.71,0.62,14.28,0.7,15.52,3.15,1.76,1.0};
        /**
@@ -26,7 +23,6 @@ public class calculation {
         B(t) = 1 or 0, 1 if busy or 0
         */
        do{
-        System.out.println("in");
         String[] datarow = new String[18];
         String[] datarowDepart = new String[18];
         customerNum++;
@@ -34,7 +30,6 @@ public class calculation {
         time = 0.0;
             for(String[] t : arrivalList){
                 time += Double.parseDouble(t[1]);
-                System.out.println(Double.parseDouble(t[1]));
             }
 
         if(customerNum == 1) {
@@ -43,9 +38,10 @@ public class calculation {
             inService = String.valueOf(time);
         } else {
             Interarrival = interTimes[arrivalList.size()];
-            service = serviceTimes[arrivalList.size()];
-            // parting methods
-            
+            for(int j = 0; j < customerNum - 1 ; j ++){
+                service += serviceTimes[j];
+                }
+            System.out.println(customerNum+ " " + service);
         }
         
          // Resets the time, then adds past interarrival times for time.
@@ -67,7 +63,22 @@ public class calculation {
             bt = 1;
          }
 
-         
+
+         if(!(customerNum == 1)){
+            if(Double.parseDouble(arrivalList.get(stopper)[2]) < time) {
+                datarowDepart[0] = arrivalList.get(stopper)[0];
+                datarowDepart[3] = arrivalList.get(stopper)[2];
+                datarowDepart[4] = "Depart";
+                data.add(datarowDepart);
+
+                stopper++;
+
+            }
+         }
+
+
+
+
          if(customerNum == 2){
             temp = "{ ";
             inQueue.add(String.valueOf(time));
@@ -75,15 +86,16 @@ public class calculation {
          } else if(inQueue.isEmpty()){
             temp = "{ ";
          } else {
+
             temp = "{ ";
-                inQueue.add(String.valueOf(String.format("%.2f", time)));
-            for (int x = 0 ; x < inQueue.size(); x++) {
+            inQueue.add(String.valueOf(String.format("%.2f", time)));
+
+            for (int x = stopper ; x < arrivalList.size(); x++) {
                 if(x == 0) {
-                    temp += inQueue.get(x);
+                    temp += arrivalList.get(x)[3];
                 } else {
-                    temp += " , " + inQueue.get(x);
+                    temp += " , " + arrivalList.get(x)[3];
                 }
-                    
             }
         }
 
@@ -110,7 +122,6 @@ public class calculation {
         datarow[16] = Integer.toString(q);
         datarow[17] = Integer.toString(iB);
          arrivalList.add(datarow);
-         toDepartList.add(datarow);
          data.add(datarow);
        } while (time < 20); 
        stringPrinter(data);
