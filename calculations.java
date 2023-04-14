@@ -53,7 +53,7 @@ public class calculations {
                         customer2.setCustomerNum(customerList.get(j).getCustomerNum());
                         customer2.setTime(customerList.get(j).getService());
                         customer2.setEvntType("Departure");
-                        customer2.setInService(String.valueOf(String.format("%.2f",customerList.get(j).getTime())));
+                        customer2.setInService(String.valueOf(String.format("%.2f",customerList.get(pointer).getTime())));
                         customer2.setP(queueHistory.get(queueHistory.size()-1).getP()+1);
                         customer2.setN(queueHistory.get(queueHistory.size()-1).getN()+1);
                         
@@ -62,7 +62,7 @@ public class calculations {
                         } else {
                             customer2.settS(queueHistory.get(j).gettS());
                         }
-                        customer2.seteTS(Double.valueOf(String.format("%.2f",(customer2.gettS() + queueHistory.get(j).gettS()))));
+                        customer2.seteTS(Double.valueOf(String.format("%.2f",(customer2.gettS() + queueHistory.get(queueHistory.size()-1).geteTS()))));
 
                         // If in service Bt = 0
                         if(!(customer2.getInService().isBlank())){
@@ -115,17 +115,18 @@ public class calculations {
 
                //Inherits the past values
                customer.settS(queueHistory.get(queueHistory.size() -1 ).gettS());
+               customer.seteTS(queueHistory.get(queueHistory.size() -1 ).geteTS());
+               System.out.println(queueHistory.get(queueHistory.size() -1 ).gettS());
                customer.setService(customerList.get(customerList.size() - 1).getService() + serviceTimes[customerList.size()]);
                customer.setP(queueHistory.get(queueHistory.size() - 1).getP());
                customer.setN(queueHistory.get(queueHistory.size() - 1).getN());           
             }
 
-
-
             time = customer.getTime();
             if(time > 20){
                 break;
             }
+
            queueHistory.add(customer);
            customerList.add(customer);
            customerNo++;
