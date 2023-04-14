@@ -13,6 +13,7 @@ public class calculations {
         Double[] interTimes = {1.73,1.35,0.71,0.62,14.28,0.7,15.52,3.15,1.76,1.0};
         int customerNo = 1;
         int pointer = 0;
+        int cInService = 1;
         Double time = 0.0;
 
        do{
@@ -53,15 +54,20 @@ public class calculations {
                         customer2.setCustomerNum(customerList.get(j).getCustomerNum());
                         customer2.setTime(customerList.get(j).getService());
                         customer2.setEvntType("Departure");
-                        customer2.setInService(String.valueOf(String.format("%.2f",customerList.get(pointer).getTime())));
+                        if(queueHistory.get(cInService).getEvntType().equals("Departure")){
+                            cInService++;
+                        }
+                        
+                        customer2.setInService(String.valueOf(String.format("%.2f",queueHistory.get(cInService) .getTime())));
                         customer2.setP(queueHistory.get(queueHistory.size()-1).getP()+1);
                         customer2.setN(queueHistory.get(queueHistory.size()-1).getN()+1);
-                        
+                        cInService++;
                         if(customerList.get(j).getService() - customerList.get(j).getTime() > queueHistory.get(j).gettS()){
                             customer2.settS(Double.valueOf(String.format("%.2f",customerList.get(j).getService() - customerList.get(j).getTime())));
                         } else {
                             customer2.settS(queueHistory.get(j).gettS());
                         }
+
                         customer2.seteTS(Double.valueOf(String.format("%.2f",(customer2.gettS() + queueHistory.get(queueHistory.size()-1).geteTS()))));
 
                         // If in service Bt = 0
