@@ -57,17 +57,19 @@ public class calculations {
                         if(queueHistory.get(cInService).getEvntType().equals("Departure")){
                             cInService++;
                         }
-                        
+
                         customer2.setInService(String.valueOf(String.format("%.2f",queueHistory.get(cInService) .getTime())));
                         customer2.setP(queueHistory.get(queueHistory.size()-1).getP()+1);
+
                         customer2.setN(queueHistory.get(queueHistory.size()-1).getN()+1);
-                        cInService++;
+                       
+                        
                         if(customerList.get(j).getService() - customerList.get(j).getTime() > queueHistory.get(j).gettS()){
                             customer2.settS(Double.valueOf(String.format("%.2f",customerList.get(j).getService() - customerList.get(j).getTime())));
                         } else {
                             customer2.settS(queueHistory.get(j).gettS());
                         }
-
+                        cInService++;
                         customer2.seteTS(Double.valueOf(String.format("%.2f",(customer2.gettS() + queueHistory.get(queueHistory.size()-1).geteTS()))));
 
                         // If in service Bt = 0
@@ -125,7 +127,7 @@ public class calculations {
                System.out.println(queueHistory.get(queueHistory.size() -1 ).gettS());
                customer.setService(customerList.get(customerList.size() - 1).getService() + serviceTimes[customerList.size()]);
                customer.setP(queueHistory.get(queueHistory.size() - 1).getP());
-               customer.setN(queueHistory.get(queueHistory.size() - 1).getN());           
+               customer.setN(queueHistory.get(queueHistory.size() - 1).getN());    
             }
 
             time = customer.getTime();
@@ -158,6 +160,8 @@ public class calculations {
                 "TS*", "\u222BQ", "Q", "\u222BB\n");
         printborder();
 
+        System.out.printf("\n%4s %12s %17s %5s %6s %9s %6s %27s %20s %14s %10s %10s %10s %9s %10s %10s %11s %10s %9s",
+        "0","0","Initializing","|","0", "0","|","0","0","|","0","0", "0", "0", "0", "0", "0", "0", "0");
 
         for (int x = 0; x < data.size(); x++) {
             String eN = String.valueOf(data.get(x).getCustomerNum()), tT = String.format("%.2f", (data.get(x).getTime()),data.get(x).getTime()), eT = data.get(x).getEvntType(),

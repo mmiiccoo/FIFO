@@ -2,9 +2,8 @@ import java.util.Set;
 
 public class customer {
     String inService = "",evntType = "",temp = "";
-    int customerNum = 0, qt = 0 ,bt = 0, p = 0 , n = 0, eWQ = 0, 
-        iQ = 0, q =0, iB = 0, stopper = 0;
-    Double interArrival = 0.0, arrival = 0.0, service = 0.0, time = 0.0, wQ = 0.0, tS=0.0, eTS = 0.0;
+    int customerNum = 0, qt = 0 ,bt = 0, p = 0 , n = 0, iQ = 0, q =0, iB = 0, stopper = 0;
+    Double interArrival = 0.0, arrival = 0.0, service = 0.0, time = 0.0, wQ = 0.0, tS=0.0, eTS = 0.0, eWQ = 0.0;
 
     customer(){
     }
@@ -72,7 +71,7 @@ public class customer {
     public void seteTS(Double eTS) {
         this.eTS = eTS;
     }
-    public void seteWQ(int eWQ) {
+    public void seteWQ(Double eWQ) {
         this.eWQ = eWQ;
     }
 
@@ -152,7 +151,7 @@ public class customer {
         return eTS;
     }
 
-    public int geteWQ() {
+    public Double geteWQ() {
         return eWQ;
     }
 
